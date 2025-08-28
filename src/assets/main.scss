@@ -1,0 +1,105 @@
+@use './variables' as *;
+
+body {
+	background: #f5f7fa;
+}
+
+.vgraph-canvas {
+	width: 100vw;
+	height: 100vh;
+	display: block;
+
+	/* Nice modern grid using CSS gradients */
+
+
+	&.grid {
+		background-image:
+				linear-gradient(to right, #23262f 1px, transparent 1px),
+				linear-gradient(to bottom, #23262f 1px, transparent 1px);
+		background-size: 24px 24px;
+
+		box-shadow: 0 2px 16px 0 rgba(0,0,0,0.15);
+	}
+
+}
+
+.vgraph-dialog {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+
+	min-width: 280px;
+	background: linear-gradient(180deg, #2a3142 0%, #1f2433 100%);
+	border: 1px solid rgba(255, 255, 255, 0.1);
+	border-radius: 10px;
+	box-shadow: 0 0 20px rgba(0, 180, 255, 0.3);
+
+	color: #f3f4f6;
+	font-family: "Segoe UI", Arial, sans-serif;
+	z-index: 1000;
+}
+
+.vgraph-dialog-header {
+	padding: 10px 16px;
+	font-weight: bold;
+	border-bottom: 1px solid rgba(255,255,255,0.1);
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.vgraph-dialog-close {
+	background: none;
+	border: none;
+	color: #aaa;
+	font-size: 16px;
+	cursor: pointer;
+}
+
+.vgraph-dialog-body {
+	padding: 16px;
+}
+
+.vgraph-dialog-body label {
+	display: block;
+	margin-bottom: 6px;
+	font-size: 13px;
+	color: #9ca8c4;
+}
+
+.vgraph-dialog-body input {
+	width: 100%;
+	padding: 8px;
+	border-radius: 6px;
+	border: 1px solid #455a64;
+	background: #1e2533;
+	color: #fff;
+	font-size: 14px;
+}
+
+.vgraph-dialog-footer {
+	padding: 12px 16px;
+	display: flex;
+	justify-content: flex-end;
+	gap: 8px;
+}
+
+.vgraph-btn-cancel,
+.vgraph-btn-save {
+	padding: 6px 14px;
+	border-radius: 6px;
+	font-size: 13px;
+	cursor: pointer;
+	border: none;
+}
+
+.vgraph-btn-cancel {
+	background: #374151;
+	color: #d1d5db;
+}
+
+.vgraph-btn-save {
+	background: #3ea6ff;
+	color: #fff;
+}
