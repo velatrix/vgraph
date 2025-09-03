@@ -228,6 +228,7 @@ export class VGraphNode {
 		const PropertyClass = VGraphPropertyManager.getProperty(name);
 		const prop = new PropertyClass(label, value); // pass label, value etc.
 		prop.node = this; // link to parent node
+		prop.theme = this.#theme.node.property;
 		// prop.onChange = () => this.events.dispatchEvent(new Event("property:change"));
 		prop.onChange = (prop) => this.events.dispatchEvent(new CustomEvent("property:changed", {
 			detail: {

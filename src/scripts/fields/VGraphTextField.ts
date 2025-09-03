@@ -7,7 +7,7 @@ export class VGraphTextProperty extends VGraphProperty<string> {
 		super(label, value);
 	}
 
-	draw(ctx: CanvasRenderingContext2D): void {
+	/*draw(ctx: CanvasRenderingContext2D): void {
 		ctx.save();
 
 		const nodeWidth = this.node.size.x;
@@ -84,7 +84,7 @@ export class VGraphTextProperty extends VGraphProperty<string> {
 		ctx.fillText(String(this.value), boxX + boxW - 12, textY);
 
 		ctx.restore();
-	}
+	}*/
 
 	createEditor () {
 

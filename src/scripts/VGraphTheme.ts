@@ -9,6 +9,14 @@ export type VGraphNodeTheme = {
 		backgroundColor: string,
 		textColor: string,
 		height: number
+	},
+	property: {
+		backgroundColor: string,
+		borderColor: string,
+		labelTextColor: string,
+		labelTextFont: string,
+		valueTextColor: string,
+		valueTextFont: string
 	}
 }
 
@@ -24,18 +32,18 @@ export type VGraphTheme = {
 		color: string,
 		width: number
 	},
-	io : {
+	io: {
 		spacing: number,
-		text : {
-			color : {
+		text: {
+			color: {
 				default: string,
 				hover: string,
 				disabled: string
 			},
-			font : string
+			font: string
 		},
-		dot : {
-			color : {
+		dot: {
+			color: {
 				default: string,
 				hover: string,
 				disabled: string
@@ -62,20 +70,27 @@ const defaultTheme: VGraphTheme = {
 			textColor: '#6e7784',
 			height: 32
 		},
-
+		property: {
+			backgroundColor: '#323C58',
+			borderColor: '#4A5568',
+			labelTextColor: '#b0bec5',
+			labelTextFont: '13px Segoe UI, Arial, sans-serif',
+			valueTextColor: '#eceff1',
+			valueTextFont: '13px Segoe UI, Arial, sans-serif'
+		}
 	},
-	io : {
+	io: {
 		spacing: 24,
-		text : {
-			color : {
+		text: {
+			color: {
 				default: '#bfc7d5',
 				hover: '#ffffff',
 				disabled: '#4c5055'
 			},
-			font : '14px Segoe UI, Arial, sans-serif'
+			font: '14px Segoe UI, Arial, sans-serif'
 		},
-		dot : {
-			color : {
+		dot: {
+			color: {
 				default: '#455A64',
 				hover: '#ffffff',
 				disabled: '#4c5055'
@@ -84,7 +99,7 @@ const defaultTheme: VGraphTheme = {
 	},
 	connection: {
 		color: '#6e7784',
-		width : 2,
+		width: 2,
 	},
 	connections: new Map<string, string>()
 }

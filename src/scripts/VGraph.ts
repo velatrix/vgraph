@@ -38,6 +38,8 @@ export class VGraph {
 		scale: 1
 	}
 
+	public hoverNodeProperties = false;
+
 	#needsDraw = false;
 
 	constructor(canvasElement: HTMLCanvasElement) {
@@ -311,20 +313,22 @@ export class VGraph {
 					ioHit = hit;
 					break;
 				}
-				const prop = node.isOverProperty(point);
-				if (this.lastMoveFieldHit) {
-					this.lastMoveFieldHit.state = 'idle';
-					this.lastMoveFieldHit = null;
-					needsRedraw = true;
-				}
-				if (prop) {
-					this.lastMoveFieldHit = prop;
-					cursor = 'pointer';
-					prop.state = 'hover';
-					needsRedraw = true;
-					break;
-				}
 
+				if(this.hoverNodeProperties) {
+					const prop = node.isOverProperty(point);
+					if (this.lastMoveFieldHit) {
+						this.lastMoveFieldHit.state = 'idle';
+						this.lastMoveFieldHit = null;
+						needsRedraw = true;
+					}
+					if (prop) {
+						this.lastMoveFieldHit = prop;
+						cursor = 'pointer';
+						prop.state = 'hover';
+						needsRedraw = true;
+						break;
+					}
+				}
 
 				if (node.isOverResizeHandle(point)) {
 					cursor = 'nwse-resize';
@@ -417,30 +421,25 @@ export class VGraph {
 	private onMouseWheel(e: WheelEvent) {
 		e.preventDefault();
 
-		const zoomFactor = 1.1; // how strong each wheel step is
+		const zoomFactor = 1.1;
 		const oldScale = this.camera.scale;
 
-		// mouse position in screen space
 		const rect = this.canvas.getBoundingClientRect();
 		const screen = new Vector2(e.clientX - rect.left, e.clientY - rect.top);
 
-		// convert to world position BEFORE zoom
 		const worldBefore = this.screenToWorld(screen);
 
-		// update scale
 		if (e.deltaY < 0) {
-			this.camera.scale *= zoomFactor;      // zoom in
+			this.camera.scale *= zoomFactor;
 		} else {
-			this.camera.scale /= zoomFactor;      // zoom out
+			this.camera.scale /= zoomFactor;
 		}
 
 		// clamp scale
 		this.camera.scale = Math.max(0.1, Math.min(5, this.camera.scale));
 
-		// convert same screen point back to world AFTER zoom
 		const worldAfter = this.screenToWorld(screen);
 
-		// adjust camera.position so the point under cursor stays fixed
 		this.camera.position.x += (worldBefore.x - worldAfter.x);
 		this.camera.position.y += (worldBefore.y - worldAfter.y);
 
