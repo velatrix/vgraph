@@ -9,6 +9,7 @@ import {VGraphOutput} from "./VGraphOutput.js";
 import {VGraphThemeManager} from "./VGraphTheme.js";
 import {VGraphIdGenerator} from "./VGraphIdGenerator.js";
 import type {VGraphProperty} from "./VGraphProperty.js";
+import type {SerializedVGraph, SerializedVGraphConnection} from "./SerializationTypes.js";
 
 export class VGraph {
 	private idGen = new VGraphIdGenerator();
@@ -57,7 +58,7 @@ export class VGraph {
 		this.canvas.addEventListener('mousedown', this.onMouseDown.bind(this));
 		this.canvas.addEventListener('mousemove', this.onMouseMove.bind(this));
 		window.addEventListener('mouseup', this.onMouseUp.bind(this));
-		this.canvas.addEventListener("wheel", (e) => this.onMouseWheel(e), { passive: false });
+		this.canvas.addEventListener("wheel", (e) => this.onMouseWheel(e), {passive: false});
 	}
 
 	public clear() {
@@ -147,22 +148,22 @@ export class VGraph {
 		ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
 
 		// viewport size in CSS px
-		const viewW = this.canvas.width  / this.dpr;
+		const viewW = this.canvas.width / this.dpr;
 		const viewH = this.canvas.height / this.dpr;
 
 		// --- 2) compute visible world rect using your camera
-		const topLeftWorld     = this.screenToWorld(new Vector2(0, 0));
+		const topLeftWorld = this.screenToWorld(new Vector2(0, 0));
 		const bottomRightWorld = this.screenToWorld(new Vector2(viewW, viewH));
 
-		const worldLeft   = topLeftWorld.x;
-		const worldTop    = topLeftWorld.y;
-		const worldRight  = bottomRightWorld.x;
+		const worldLeft = topLeftWorld.x;
+		const worldTop = topLeftWorld.y;
+		const worldRight = bottomRightWorld.x;
 		const worldBottom = bottomRightWorld.y;
 
 		// snap starts to exact multiples of grid size
 		const spacing = this.theme.grid.size;
-		const startX = Math.floor(worldLeft  / spacing) * spacing;
-		const startY = Math.floor(worldTop   / spacing) * spacing;
+		const startX = Math.floor(worldLeft / spacing) * spacing;
+		const startY = Math.floor(worldTop / spacing) * spacing;
 
 		// --- 3) apply ONE world transform (camera + dpr) and draw in world units
 		ctx.setTransform(
@@ -314,7 +315,7 @@ export class VGraph {
 					break;
 				}
 
-				if(this.hoverNodeProperties) {
+				if (this.hoverNodeProperties) {
 					const prop = node.isOverProperty(point);
 					if (this.lastMoveFieldHit) {
 						this.lastMoveFieldHit.state = 'idle';
@@ -469,4 +470,42 @@ export class VGraph {
 		);
 	}
 
+
+	serialize(): SerializedVGraph {
+		const nodes = this.nodes.map(node => node.serialize());
+
+		const connections: SerializedVGraphConnection[] = [];
+		for (const node of this.nodes) {
+			for (const output of node.outputs) {
+				for (const input of output.connections) {
+					connections.push({
+						from: { node: node.id, io: output.id },
+						to: { node: input.node.id, io: input.id }
+					});
+				}
+			}
+		}
+
+		return { nodes, connections };
+	}
+
+	deserialize(data: SerializedVGraph) {
+		this.nodes = data.nodes.map(nodeData => {
+			const node = this.createNode(nodeData.type);
+			node.deserialize(nodeData);
+			return node;
+		});
+
+		for (const conn of data.connections) {
+			const fromNode = this.nodes.find(n => n.id === conn.from.node)!;
+			const toNode = this.nodes.find(n => n.id === conn.to.node)!;
+
+			const fromOutput = fromNode.outputs.find(o => o.id === conn.from.io)!;
+			const toInput = toNode.inputs.find(i => i.id === conn.to.io)!;
+
+			fromOutput.connect(toInput);
+		}
+
+		this.draw();
+	}
 }

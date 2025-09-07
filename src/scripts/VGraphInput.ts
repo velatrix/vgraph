@@ -2,6 +2,7 @@ import {Vector2} from "./Utils.js";
 import {VGraphOutput} from "./VGraphOutput.js";
 import {VGraphIO} from "./VGraphIO.js";
 import type {VGraphNode} from "./VGraphNode.js";
+import type {SerializedVGraphIO} from "./SerializationTypes.js";
 
 export class VGraphInput extends VGraphIO {
 	connection: VGraphOutput | null; // Single connection to an output

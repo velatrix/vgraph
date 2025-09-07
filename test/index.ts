@@ -10,6 +10,9 @@ import {VGraphTextProperty} from "../src/scripts/fields/VGraphTextField.js";
 
 const canvas = document.getElementById('graph-area');
 
+//import json file
+import data from './test.json' with {type: 'json'};
+
 if (canvas) {
 	const graph = new VGraph(canvas as HTMLCanvasElement);
 	graph.theme.connections.set('flow', '#687FE5');
@@ -19,6 +22,11 @@ if (canvas) {
 
 	graph.registerNode('base', VGraphNode);
 	graph.registerNode('test', TestNode);
+	// createNew(graph);
+	graph.deserialize(data);
+}
+
+function createNew(graph: VGraph) {
 
 
 
@@ -39,5 +47,5 @@ if (canvas) {
 
 	graph.draw();
 
-
+	console.log(JSON.stringify(graph.serialize()));
 }

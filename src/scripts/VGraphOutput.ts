@@ -5,6 +5,7 @@ import type {Vector2} from "./Utils.js";
 import type {VGraphInput} from "./VGraphInput.js";
 import {VGraphIO} from "./VGraphIO.js";
 import type {VGraphNode} from "./VGraphNode.js";
+import type {SerializedVGraphIO} from "./SerializationTypes.js";
 
 export class VGraphOutput extends VGraphIO {
 	connections: VGraphInput[]; // Connected inputs
@@ -34,4 +35,5 @@ export class VGraphOutput extends VGraphIO {
 	getLabelAlign(): "left" | "right" {
 		return "right";
 	}
+
 }

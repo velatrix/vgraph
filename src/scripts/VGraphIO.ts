@@ -5,6 +5,7 @@ import type {VGraphNode} from "./VGraphNode.js";
 import {VGraphOutput} from "./VGraphOutput.js";
 import {VGraphInput} from "./VGraphInput.js";
 import type {VGraphTheme} from "./VGraphTheme.js";
+import type {SerializedVGraphIO} from "./SerializationTypes.js";
 
 export abstract  class VGraphIO {
 	id: number;
@@ -71,5 +72,13 @@ export abstract  class VGraphIO {
 		ctx.textAlign = this.getLabelAlign() === 'left' ? 'left' : 'right';
 		ctx.textBaseline = 'middle';
 		ctx.fillText(this.label, this.position.x + (this.getLabelAlign() === 'left' ? 16 : -16), this.position.y);
+	}
+
+	serialize(): SerializedVGraphIO {
+		return {
+			id: this.id,
+			label: this.label,
+			type: this.type
+		};
 	}
 }

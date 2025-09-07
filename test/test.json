@@ -1,0 +1,140 @@
+{
+	"nodes": [
+		{
+			"id": 0,
+			"type": "test",
+			"title": "Title",
+			"position": {
+				"x": 600,
+				"y": 300
+			},
+			"size": {
+				"width": 300,
+				"height": 200
+			},
+			"inputs": [
+				{
+					"id": 0,
+					"label": "Step In",
+					"type": "flow"
+				}
+			],
+			"outputs": [
+				{
+					"id": 0,
+					"label": "Step Out",
+					"type": "flow"
+				}
+			],
+			"metaData": {},
+			"theme": {
+				"nodeColor": "#1b202c",
+				"borderColor": "#263238",
+				"selectedBorderColor": "#e1904c",
+				"cornerRadius": 16,
+				"titleBarColor": "#161b25",
+				"titleTextColor": "#6e7784",
+				"titleBarHeight": 32,
+				"ioSpacing": 24
+			}
+		},
+		{
+			"id": 1,
+			"type": "test",
+			"title": "Title",
+			"position": {
+				"x": 1000,
+				"y": 100
+			},
+			"size": {
+				"width": 200,
+				"height": 150
+			},
+			"inputs": [
+				{
+					"id": 0,
+					"label": "Step In",
+					"type": "flow"
+				}
+			],
+			"outputs": [
+				{
+					"id": 0,
+					"label": "Step Out",
+					"type": "flow"
+				}
+			],
+			"metaData": {},
+			"theme": {
+				"nodeColor": "#1b202c",
+				"borderColor": "#263238",
+				"selectedBorderColor": "#e1904c",
+				"cornerRadius": 16,
+				"titleBarColor": "#161b25",
+				"titleTextColor": "#6e7784",
+				"titleBarHeight": 32,
+				"ioSpacing": 24
+			}
+		},
+		{
+			"id": 2,
+			"type": "test",
+			"title": "Title",
+			"position": {
+				"x": 1000,
+				"y": 500
+			},
+			"size": {
+				"width": 200,
+				"height": 150
+			},
+			"inputs": [
+				{
+					"id": 0,
+					"label": "Step In",
+					"type": "flow"
+				}
+			],
+			"outputs": [
+				{
+					"id": 0,
+					"label": "Step Out",
+					"type": "flow"
+				}
+			],
+			"metaData": {},
+			"theme": {
+				"nodeColor": "#1b202c",
+				"borderColor": "#263238",
+				"selectedBorderColor": "#e1904c",
+				"cornerRadius": 16,
+				"titleBarColor": "#161b25",
+				"titleTextColor": "#6e7784",
+				"titleBarHeight": 32,
+				"ioSpacing": 24
+			}
+		}
+	],
+	"connections": [
+		{
+			"from": {
+				"node": 0,
+				"io": 0
+			},
+			"to": {
+				"node": 1,
+				"io": 0
+			}
+		},
+		{
+			"from": {
+				"node": 0,
+				"io": 0
+			},
+			"to": {
+				"node": 2,
+				"io": 0
+			}
+		}
+	]
+}

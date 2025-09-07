@@ -9,6 +9,7 @@ import {VGraphIdGenerator} from "./VGraphIdGenerator.js";
 import type {VGraphProperty} from "./VGraphProperty.js";
 import {VGraphPropertyManager} from "./VGraphPropertyManager.js";
 import type {VGraph} from "./VGraph.js";
+import type {SerializedVGraphNode} from "./SerializationTypes.js";
 
 export class VGraphNode {
 	id: number = 0;
@@ -21,6 +22,9 @@ export class VGraphNode {
 	#size: Vector2;
 	title: string = 'Title';
 
+	minHeight = 100;
+	minWidth = 150;
+
 	nodeColor: string = VGraphThemeManager.getNodeDefault().backgroundColor;
 	borderColor: string = VGraphThemeManager.getNodeDefault().borderColor;
 	selectedBorderColor: string = VGraphThemeManager.getNodeDefault().borderSelectedColor;
@@ -29,6 +33,7 @@ export class VGraphNode {
 	titleBarColor: string = VGraphThemeManager.getNodeDefault().title.backgroundColor;
 	titleTextColor: string = VGraphThemeManager.getNodeDefault().title.textColor;
 	titleBarHeight: number = VGraphThemeManager.getNodeDefault().title.height;
+	ioSpacing = VGraphThemeManager.getDefault().io.spacing;
 
 	isSelected: boolean = false;
 
@@ -39,10 +44,7 @@ export class VGraphNode {
 
 	properties: VGraphProperty<any>[] = [];
 
-	ioSpacing = VGraphThemeManager.getDefault().io.spacing;
-
-	minHeight = 100;
-	minWidth = 150;
+	metaData: any = {};
 
 	#theme = VGraphThemeManager.getDefault();
 
@@ -238,6 +240,77 @@ export class VGraphNode {
 		this.properties.push(prop);
 		this.recalculatePositions();
 	}
+
+	//
+
+	serialize(): SerializedVGraphNode {
+		return {
+			id: this.id,
+			type: this.type,
+			title: this.title,
+			position: {x: this.position.x, y: this.position.y},
+			size: {width: this.size.x, height: this.size.y},
+			inputs: this.inputs.map(input => input.serialize()),
+			outputs: this.outputs.map(output => output.serialize()),
+			/*properties: this.properties.map(prop => ({
+				id: prop.id,
+				type: prop.type,
+				value: prop.value
+			})),*/
+			metaData: this.metaData,
+			theme: {
+				nodeColor: this.nodeColor,
+				borderColor: this.borderColor,
+				selectedBorderColor: this.selectedBorderColor,
+				cornerRadius: this.cornerRadius,
+				titleBarColor: this.titleBarColor,
+				titleTextColor: this.titleTextColor,
+				titleBarHeight: this.titleBarHeight,
+				ioSpacing: this.ioSpacing
+			}
+		}
+	}
+
+
+	deserialize(data: SerializedVGraphNode) {
+		this.id = data.id;
+		this.type = data.type;
+		this.title = data.title;
+
+		this.position = new Vector2(data.position.x, data.position.y);
+		this.size = new Vector2(data.size.width, data.size.height);
+
+		this.inputs = data.inputs.map(io =>
+			new VGraphInput(io.id, io.label, io.type, Vector2.zero(), this)
+		);
+
+		this.outputs = data.outputs.map(io =>
+			new VGraphOutput(io.id, io.label, io.type, Vector2.zero(), this)
+		);
+
+		// Uncomment when you add properties back into serialization
+		// this.properties = data.properties.map(p => {
+		//   const PropertyClass = VGraphPropertyManager.getProperty(p.type);
+		//   const prop = new PropertyClass(p.label, p.value);
+		//   prop.node = this;
+		//   prop.theme = this.graph.theme.node.property;
+		//   return prop;
+		// });
+
+		this.metaData = data.metaData;
+
+		this.nodeColor = data.theme.nodeColor;
+		this.borderColor = data.theme.borderColor;
+		this.selectedBorderColor = data.theme.selectedBorderColor;
+		this.cornerRadius = data.theme.cornerRadius;
+		this.titleBarColor = data.theme.titleBarColor;
+		this.titleTextColor = data.theme.titleTextColor;
+		this.titleBarHeight = data.theme.titleBarHeight;
+		this.ioSpacing = data.theme.ioSpacing;
+
+		this.recalculatePositions();
+	}
+
 
 	// Helpers
 	containsPoint(point: Vector2): boolean {
